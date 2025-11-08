@@ -6,7 +6,12 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import { upsertSpirit, updateSpiritState, removeSpirit, getWorld } from "./worldState.js";
+import {
+  upsertSpirit,
+  updateSpiritState,
+  removeSpirit,
+  getWorld,
+} from "./worldState.js";
 import spiritRoute from "./routes/spirit.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +28,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/spirit", spiritRoute);
+
+const distPath = path.join(__dirname, "../dist");
+app.use(express.static(distPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
+});
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -57,5 +69,5 @@ io.on("connection", (socket) => {
 setInterval(() => io.emit("world:update", getWorld()), 1000);
 
 server.listen(PORT, () => {
-  console.log(`🌿 Living Garden server running on http://localhost:${PORT}`);
+  console.log(`🌿 The Living Garden running on port ${PORT}`);
 });
