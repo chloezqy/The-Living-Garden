@@ -2,7 +2,6 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
-import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -12,14 +11,10 @@ import {
   removeSpirit,
   getWorld,
 } from "./worldState.js";
-import spiritRoute from "./routes/spirit.js";
 
+// 🔧 Resolve directory (since ES modules don’t have __dirname by default)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.resolve(__dirname, ".env") });
-
-console.log("🔍 OPENAI_API_KEY loaded:", process.env.OPENAI_API_KEY ? "YES" : "NO");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -27,23 +22,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/spirit", spiritRoute);
-
+// ✅ Serve your built React frontend (from /dist after `npm run build`)
 const distPath = path.join(__dirname, "../dist");
 app.use(express.static(distPath));
 
+// ✅ Handle all unknown routes → return index.html (for React Router)
 app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
+// 🪶 Create the HTTP + WebSocket server
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "*", // On Render, your frontend will be on same domain anyway
     methods: ["GET", "POST"],
   },
 });
 
+// 🌱 Maintain synchronized world state
 io.on("connection", (socket) => {
   console.log(`🪶 Client connected: ${socket.id}`);
 
@@ -66,8 +63,10 @@ io.on("connection", (socket) => {
   });
 });
 
+// 🕒 Broadcast world state every second
 setInterval(() => io.emit("world:update", getWorld()), 1000);
 
+// 🌿 Start server
 server.listen(PORT, () => {
   console.log(`🌿 The Living Garden running on port ${PORT}`);
 });
