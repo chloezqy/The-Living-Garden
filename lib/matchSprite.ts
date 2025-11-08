@@ -1,6 +1,5 @@
 import { Spirit } from "../types";
 
-// 🌿 简单 hash → 稳定 index
 const hashCode = (str: string): number => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -10,22 +9,17 @@ const hashCode = (str: string): number => {
   return hash;
 };
 
-// 你的 plant 图片数量
 const PLANT_COUNT = 21;
 
-/**
- * 🌿 临时统一：所有 spirit（plant / animal / cloud）都使用 plant 系列图片
- */
 export function matchSprite(spirit: Spirit): string {
-  const { archetype, traits, motionStyle } = spirit;
+  let id = spirit.id;
 
-  // 用 spirit 的 archetype + traits + motionStyle 生成稳定 hash
-  const key = `${archetype}_${traits.sort().join("_")}_${motionStyle}`;
+  id = `spirit_${Math.floor(Math.random() * 1e9)}`;
+  spirit.id = id;
+
+  const { traits = [], motionStyle = "still", archetype = "plant" } = spirit;
+  const key = `${id}_${archetype}_${traits.sort().join("_")}_${motionStyle}`;
   const hash = Math.abs(hashCode(key));
-
-  // 保证结果 1～21 之间
-  const index = (hash % PLANT_COUNT);
-
-  // ✅ 统一返回 plant 图
+  const index = hash % PLANT_COUNT;
   return `/plants-${index}.png`;
 }
