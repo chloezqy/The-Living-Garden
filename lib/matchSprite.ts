@@ -11,7 +11,7 @@ const hashCode = (str: string): number => {
 };
 
 // 你的 plant 图片数量
-const PLANT_COUNT = 19;
+const PLANT_COUNT = 21;
 
 /**
  * 🌿 临时统一：所有 spirit（plant / animal / cloud）都使用 plant 系列图片
@@ -23,9 +23,9 @@ export function matchSprite(spirit: Spirit): string {
   const key = `${archetype}_${traits.sort().join("_")}_${motionStyle}`;
   const hash = Math.abs(hashCode(key));
 
-  // 保证结果 1～19 之间
-  const index = (hash % PLANT_COUNT) + 1;
+  // 保证结果 1～21 之间
+  const index = (hash % PLANT_COUNT);
 
   // ✅ 统一返回 plant 图
-  return `/plant-${index}.png`;
+  return `/plants-${index}.png`;
 }
