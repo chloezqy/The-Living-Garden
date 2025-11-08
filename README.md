@@ -1,7 +1,6 @@
-# 🌿 The Living Garden – A generative, shared world of AI-grown spirits 🌿
+# 🌿 The Living Garden 🌿 – A generative, shared world of AI-grown spirits
 
-> **Nova Hackathon 2025 — Generative Technology Track**
-> Created by **Team Chiikawa**
+> **Nova Generative Technology Hackathon 2025** – Created by **Team Chiikawa**
 
 ---
 
@@ -33,45 +32,6 @@ All spirits live together in a **shared garden**, rendered in **p5.js** with bre
 | AI             | OpenRouter (OpenAI API-compatible)                       |
 | Assets         | Midjourney-generated sprites (plants / animals / clouds) |
 | Styling        | Tailwind CSS                                             |
-
----
-
-## ⚙️ Setup & Run
-
-### 1️⃣ Clone
-
-```bash
-git clone https://github.com/YOUR_USERNAME/the-living-garden.git
-cd the-living-garden
-```
-
-### 2️⃣ Install dependencies
-
-```bash
-npm install
-# or
-pnpm install
-```
-
-### 3️⃣ Create a `.env.local` file
-
-```bash
-VITE_OPENROUTER_KEY=sk-or-v1-xxxxxxxxxxxxxxxxxxxx
-```
-
-### 4️⃣ Run the app
-
-```bash
-npm run dev
-```
-
-Then open [http://localhost:5173](http://localhost:5173).
-
----
-
-## 🚨 API Key Notice
-
-For the hackathon demo, this project uses the **OpenAI SDK in the browser**. This is **for local/demo use only.**
 
 ---
 
