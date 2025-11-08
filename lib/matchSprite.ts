@@ -1,25 +1,42 @@
 import { Spirit } from "../types";
 
-// 🌿 Simple hash → stable index (same sprite for same ID)
-const hashCode = (str: string): number => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0; // 32-bit integer
-  }
-  return hash;
-};
-
-// 🌿 Number of available plant sprites (plants-0.png → plants-20.png)
 const PLANT_COUNT = 21;
+const ANIMAL_COUNT = 11;
+const CLOUD_COUNT = 12;
 
-/**
- * 🌱 All archetypes use plant images for now.
- * Chooses one deterministically from spirit.id (so it never changes).
- */
 export function matchSprite(spirit: Spirit): string {
-  const { id } = spirit;
-  const hash = Math.abs(hashCode(id));
-  const index = hash % PLANT_COUNT; // 0 → 20
-  return `/plants-${index}.png`;
+  const spriteKey = `sprite_${spirit.id}`;
+
+  const savedSprite = localStorage.getItem(spriteKey);
+  if (savedSprite) return savedSprite;
+
+  let spritePath = "";
+  switch (spirit.archetype) {
+    case "animal":
+      spritePath = `/animals-${Math.floor(Math.random() * ANIMAL_COUNT)}.png`;
+      break;
+    case "cloud":
+      spritePath = `/clouds-${Math.floor(Math.random() * CLOUD_COUNT)}.png`;
+      break;
+    default:
+      spritePath = `/plants-${Math.floor(Math.random() * PLANT_COUNT)}.png`;
+      break;
+  }
+
+  localStorage.setItem(spriteKey, spritePath);
+  return spritePath;
+}
+
+export function getStablePosition(spiritId: string, canvasWidth: number, canvasHeight: number) {
+  const posKey = `pos_${spiritId}`;
+  const saved = localStorage.getItem(posKey);
+  if (saved) return JSON.parse(saved);
+
+  const pos = {
+    x: Math.random() * canvasWidth * 0.8 + canvasWidth * 0.1,
+    y: Math.random() * canvasHeight * 0.5 + canvasHeight * 0.4,
+  };
+
+  localStorage.setItem(posKey, JSON.stringify(pos));
+  return pos;
 }

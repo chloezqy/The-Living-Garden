@@ -19,7 +19,7 @@ All spirits live together in a **shared garden**, rendered in **p5.js** with bre
 * **Dynamic visual ecosystem** (plants sway, clouds drift, animals float)
 * **Shared real-time garden** — everyone’s spirits coexist and evolve
 * **Activity awareness** — idle users’ spirits “sleep”; active users’ spirits glow
-* **Midjourney-generated assets** for visuals
+* **AI-generated assets** for visuals (plants, animals, cloud)
 
 ---
 
