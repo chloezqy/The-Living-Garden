@@ -13,19 +13,37 @@ router.post("/", async (req, res) => {
   });
 
   const prompt = `
-You are a nature-spirit generator.
-Based on these quiz answers, generate a JSON object with:
-{
- "archetype": "plant" | "animal" | "cloud",
- "traits": ["gentle","curious"],
- "colorPalette": ["#A8DADC","#457B9D","#1D3557"],
- "motionStyle": "swaying",
- "growth": {"branching":0.6,"curl":0.4,"pulse":0.7}
-}
+You are a creative interpreter that transforms symbolic quiz answers into nature spirits
+for a shared digital garden.
+
+Each spirit can be one of three archetypes:
+- "plant" → grounded, growing, resilient
+- "animal" → lively, instinctual, expressive
+- "cloud" → dreamy, free, imaginative
+
+Each spirit has:
+- 2–3 evocative traits (adjectives like “curious”, “radiant”, “melancholic”)
+- a harmonious 3–5 color palette (hex codes)
+- a motion style (“swaying”, “darting”, “floating”, etc.)
+- growth attributes (branching, curl, pulse, each 0.0–1.0)
+
+Interpret the user’s answers metaphorically. For example:
+- Choosing “Star”, “Bell”, or “Floating” suggests a “cloud” spirit.
+- Choosing “Roots”, “Moss”, or “Growing” suggests a “plant”.
+- Choosing “Bell”, “Animal sound”, or “Running” suggests an “animal”.
+
 Answers:
 ${answers.map(a => `- ${a.question}: ${a.answer}`).join("\n")}
-Return only valid JSON.
-  `;
+
+Return ONLY valid JSON matching this schema:
+{
+  "archetype": "plant" | "animal" | "cloud",
+  "traits": ["...", "..."],
+  "colorPalette": ["#xxxxxx", "#xxxxxx", "#xxxxxx"],
+  "motionStyle": "...",
+  "growth": {"branching":0.0,"curl":0.0,"pulse":0.0}
+}
+`;
 
   try {
     const completion = await client.chat.completions.create({

@@ -1,39 +1,31 @@
+import { Spirit } from "../types";
 
-import { Spirit } from '../types';
-
-// Simple hash function to get a consistent number from a string.
+// 🌿 简单 hash → 稳定 index
 const hashCode = (str: string): number => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0; // Convert to 32bit integer
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
   }
   return hash;
 };
 
-// Number of available assets per archetype.
-// In a real project, this might be dynamic or a larger number.
-const ASSET_COUNT = 100; 
+// 你的 plant 图片数量
+const PLANT_COUNT = 19;
 
 /**
- * Selects a sprite image path based on the spirit's archetype and traits.
- * This provides a pseudo-random but consistent visual for each unique spirit.
- * @param spirit - The spirit object.
- * @returns A URL path to the sprite image.
+ * 🌿 临时统一：所有 spirit（plant / animal / cloud）都使用 plant 系列图片
  */
 export function matchSprite(spirit: Spirit): string {
-  if (spirit.archetype === 'plant') {
-    // Plants are rendered procedurally, so they don't need a sprite.
-    return '';
-  }
+  const { archetype, traits, motionStyle } = spirit;
 
-  const folder = spirit.archetype + 's'; // 'animals' or 'clouds'
-  const traitKey = spirit.traits.sort().join('_'); // Sort for consistency
-  
-  // Use a hash to pick a consistent image number
-  const hash = Math.abs(hashCode(traitKey)) % ASSET_COUNT;
-  
-  // Assumes images are named 0.png, 1.png, etc. in the public assets folder
-  return `/assets/spirits/${folder}/${hash}.png`;
+  // 用 spirit 的 archetype + traits + motionStyle 生成稳定 hash
+  const key = `${archetype}_${traits.sort().join("_")}_${motionStyle}`;
+  const hash = Math.abs(hashCode(key));
+
+  // 保证结果 1～19 之间
+  const index = (hash % PLANT_COUNT) + 1;
+
+  // ✅ 统一返回 plant 图
+  return `/plant-${index}.png`;
 }
