@@ -1,40 +1,37 @@
-# 🌿 The Living Garden 🌿 – A generative, shared world of AI-grown spirits
+# The Living Garden
 
-> **Nova Generative Technology Hackathon 2025** – Created by **Team Chiikawa**
+*A generative, shared world of AI-grown spirits*
 
----
+[🌿 **Live Demo → the-living-garden.onrender.com**](https://the-living-garden.onrender.com)
+
 
 ## Overview
 
-**The Living Garden** is an interactive, AI-driven ecosystem where each participant grows a unique **spirit** — a plant, animal, or cloud — born from their personality.
+**The Living Garden** is an interactive, generative ecosystem where each visitor grows a unique **spirit** — a plant, animal, or cloud — born from their personality and choices.
+All spirits coexist in a **shared, real-time garden**, rendered in **p5.js** and synchronized through **Socket.io**.
 
-Each user answers a short quiz (e.g. *In a dream, you are...*), and AI interprets those answers to generate a **Spirit Profile** (traits, color palette, growth rhythm).
-All spirits live together in a **shared garden**, rendered in **p5.js** with breathing, glowing, and idle/sleep states synchronized via **socket.io**.
+Built during the [NOVA Hackathon 2025](https://nova.scottylabs.org/).
 
----
 
 ## Features
 
-* **AI-generated spirit profiles** via OpenRouter (`gpt-4o-mini`)
-* **Dynamic visual ecosystem** (plants sway, clouds drift, animals float)
-* **Shared real-time garden** — everyone’s spirits coexist and evolve
-* **Activity awareness** — idle users’ spirits “sleep”; active users’ spirits glow
-* **AI-generated assets** for visuals (plants / animals / clouds)
+* **Create your spirit** – answer poetic prompts to generate a personality and form
+* **Shared world** — everyone’s spirits appear and move together via Socket.io
+* **Persistent presence** — your spirit remains until reborn
 
----
 
 ## Tech Stack
 
-| Layer          | Technology                                               |
-| -------------- | -------------------------------------------------------- |
-| Frontend       | React + Vite + TypeScript + p5.js                        |
-| Real-time Sync | Socket.io                                                |
-| AI             | OpenRouter (OpenAI API-compatible)                       |
-| Assets         | AI-generated sprites (plants / animals / clouds) |
-| Styling        | Tailwind CSS                                             |
+| Layer    | Technology                     |
+| -------- | ------------------------------ |
+| Frontend | React, Vite, TypeScript, p5.js |
+| Backend  | Node.js, Express, Socket.io    |
+| AI       | OpenRouter (OpenAI API)        |
+| Assets   | AI-generated sprites           |
+| Styling  | Tailwind CSS                   |
+| Hosting  | Render                         |
 
----
 
-## 🧑‍💻 Contributors
+## Team
 
 Chloe Zhu, Monica Wan, Cara Feng, Savannah Cheng
