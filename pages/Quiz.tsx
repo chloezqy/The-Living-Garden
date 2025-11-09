@@ -4,20 +4,34 @@ import { v4 as uuidv4 } from "uuid";
 import { socket } from "../socket";
 import { Spirit } from "../types";
 
-const quizQuestions = [
+const allQuestions = [
   { id: 1, question: "At twilight, do you feel more drawn to the...", choices: ["First Star", "Last Light"] },
   { id: 2, question: "A hidden path appears. Is it made of...", choices: ["Mossy Stones", "Winding Roots"] },
   { id: 3, question: "You hear a sound. Is it...", choices: ["A Distant Bell", "A Soft Hum"] },
   { id: 4, question: "In a dream, you are...", choices: ["Floating", "Growing"] },
+  { id: 5, question: "The wind whispers a secret. It feels...", choices: ["Cool and Sharp", "Warm and Gentle"] },
+  { id: 6, question: "Your reflection ripples. It turns into...", choices: ["A Bird Taking Flight", "A Tree in Bloom"] },
+  { id: 7, question: "The ground glows faintly. You step on...", choices: ["Fallen Stars", "Dewy Grass"] },
+  { id: 8, question: "Someone calls your name. You answer with...", choices: ["A Song", "A Smile"] },
+  { id: 9, question: "A raindrop lands on your hand. It feels like...", choices: ["Memory", "Promise"] },
+  { id: 10, question: "When you close your eyes, you see...", choices: ["An Ocean", "A Garden"] },
 ];
 
+// archetype pool
 const archetypes = ["plant", "animal", "cloud"] as const;
 
 const Quiz: React.FC = () => {
+  const [quizQuestions, setQuizQuestions] = useState<typeof allQuestions>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{ question: string; answer: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  // 随机抽取 3 道题目
+  useEffect(() => {
+    const shuffled = [...allQuestions].sort(() => 0.5 - Math.random());
+    setQuizQuestions(shuffled.slice(0, 3));
+  }, []);
 
   const handleAnswer = (answer: string) => {
     const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -28,7 +42,7 @@ const Quiz: React.FC = () => {
   };
 
   useEffect(() => {
-    if (answers.length === quizQuestions.length) {
+    if (answers.length === quizQuestions.length && quizQuestions.length > 0) {
       handleSubmit();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,19 +52,14 @@ const Quiz: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // 🎲 Randomly assign archetype and traits
       const randomArchetype =
         archetypes[Math.floor(Math.random() * archetypes.length)];
 
-      const randomTraits = ["gentle", "curious", "radiant", "bold", "soft"];
-      const shuffledTraits = randomTraits
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 2);
+      const randomTraits = ["gentle", "curious", "radiant", "bold", "soft", "dreamy", "playful", "resilient", "quiet", "bright"];
+      const shuffledTraits = randomTraits.sort(() => 0.5 - Math.random()).slice(0, 2);
 
-      const randomPalette = ["#A8DADC", "#457B9D", "#1D3557", "#F1FAEE", "#E63946"];
-      const chosenColors = randomPalette
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3);
+      const randomPalette = ["#A8DADC", "#457B9D", "#1D3557", "#F1FAEE", "#E63946", "#FFC8DD", "#CDB4DB", "#BDE0FE"];
+      const chosenColors = randomPalette.sort(() => 0.5 - Math.random()).slice(0, 3);
 
       const spiritId = localStorage.getItem("spiritId") || uuidv4();
       localStorage.setItem("spiritId", spiritId);
@@ -81,7 +90,7 @@ const Quiz: React.FC = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || quizQuestions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-center p-4">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-teal-400 mb-6"></div>
