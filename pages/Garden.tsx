@@ -5,9 +5,7 @@ import type p5 from "p5";
 import { socket } from "../socket";
 import { WorldState, Spirit, ActivityState } from "../types";
 import { ActivityMonitor } from "../lib/activityMonitor";
-import { renderAnimal } from "../render/renderAnimal";
-import { renderCloud } from "../render/renderCloud";
-import { renderPlant } from "../render/renderPlant";
+import { renderPlant } from "../render/renderObject";
 
 const BACKGROUND_PATH = "/background.png";
 
@@ -43,7 +41,7 @@ const P5Sketch: React.FC<{ world: WorldState }> = ({ world }) => {
       p.draw = () => {
         const currentSpirits: Spirit[] = Object.values(spiritsRef.current);
 
-        // ✅ 背景图覆盖整个画布
+        // 背景图覆盖整个画布
         if (bgImgRef.current) {
           p.imageMode(p.CORNER);
           p.image(bgImgRef.current, 0, 0, p.width, p.height);
@@ -52,12 +50,16 @@ const P5Sketch: React.FC<{ world: WorldState }> = ({ world }) => {
         }
 
         for (const spirit of currentSpirits) {
-          // ✅ 只在第一次分配固定位置
+          // 只在第一次分配固定位置
           if (!localPositions.current[spirit.id]) {
-            localPositions.current[spirit.id] = {
-              x: p.random(p.width * 0.3, p.width * 0.7),
-              y: p.random(p.height * 0.5, p.height * 0.8),
-            };
+            const x = p.random(p.width * 0.3, p.width * 0.7);
+            // 云应该出现在天空中，y 偏高（靠近画布顶部）。其余 archetype 保持原来的范围。
+            const y =
+              spirit.archetype === "cloud"
+                ? p.random(p.height * 0.08, p.height * 0.28)
+                : p.random(p.height * 0.5, p.height * 0.8);
+
+            localPositions.current[spirit.id] = { x, y };
           }
 
           // 使用本地固定坐标

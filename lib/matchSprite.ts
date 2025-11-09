@@ -1,8 +1,8 @@
 import { Spirit } from "../types";
 
 const PLANT_COUNT = 21;
-const ANIMAL_COUNT = 11;
-const CLOUD_COUNT = 12;
+const ANIMAL_COUNT = 8;
+const CLOUD_COUNT = 15;
 
 export function matchSprite(spirit: Spirit): string {
   const spriteKey = `sprite_${spirit.id}`;
